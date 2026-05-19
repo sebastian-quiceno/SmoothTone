@@ -1,12 +1,16 @@
 import { useState, useEffect, useMemo } from "react";
 
-import { InfoCard } from "../components/InfoCard";
+import {OptionsSavedSong} from './OptionsSavedSong'
+import {OptionsSong} from './OptionsSong'
 
 import { songService } from "../services/songService";
+
+import {useAuth} from '../hooks/useAuth'
 
 import portraitNotFound from "/portraitNotFound.jpg";
 
 type SongCardProps = {
+  userSongId?: number
   id: number;
   title: string;
   artist: string;
@@ -16,9 +20,11 @@ type SongCardProps = {
   size: number;
   dateUpload: Date;
   onClick: () => void;
+  saved: boolean
 };
 
 export const SongCardExtended = ({
+  userSongId,
   id,
   title,
   artist,
@@ -28,9 +34,11 @@ export const SongCardExtended = ({
   size,
   dateUpload,
   onClick,
+  saved
 }: SongCardProps) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const {userId} = useAuth()
 
   useEffect(() => {
     songService
@@ -48,11 +56,8 @@ export const SongCardExtended = ({
   }, [dateUpload]);
 
   return (
-    <div
-      className="grid grid-cols-4 items-center text-white gap-16"
-      onClick={onClick}
-    >
-      <div className="flex flex-row gap-2">
+    <div className="grid grid-cols-4 items-center text-white gap-16">
+      <div className="flex flex-row gap-2 cursor-pointer" onClick={onClick}>
         <img
           className="w-[65px] h-[65px] rounded-xl hover:shadow-sm"
           src={
@@ -69,15 +74,10 @@ export const SongCardExtended = ({
       </div>
       <span className="text-white/70 text-2xl">{genre}</span>
       <span className="text-white/70 text-xl">{formattedDate}</span>
-      <InfoCard
-        title={title}
-        artist={artist}
-        genre={genre}
-        uploader={uploader}
-        dateUpload={dateUpload}
-        duration={duration}
-        size={size}
-      />
+      
+      {saved&& <OptionsSavedSong  userSongId={userSongId}/>}
+      {!saved&& <OptionsSong songId={id} userId={userId}/>}
+      
     </div>
   );
 };

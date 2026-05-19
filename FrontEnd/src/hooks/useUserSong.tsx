@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import { userSongService } from "../services/userSongService";
-import { type UserSong } from "../types/userSong";
+import { type UserSong, type UserSongRequest } from "../types/userSong";
 
 export const useUserSong = () => {
   const [userSongs, setUserSongs] = useState<UserSong[]>([]);
@@ -33,9 +33,6 @@ export const useUserSong = () => {
 
     try {
       const songs = await userSongService.getMostPlayedUserSongs(id);
-      console.log("Las canciones mas escuchadas son:")
-      console.log(songs)
-      setUserSongs(songs);
       return songs;
     } catch (err: unknown) {
       if (err instanceof Error) {
@@ -44,6 +41,41 @@ export const useUserSong = () => {
         setError("Error al obtener canciones mas escuchadas guardadas");
       }
       return [];
+    } finally {
+      setLoading(false);
+    }
+  };
+  const addUserSong = async ({userId, songId}: UserSongRequest): Promise<UserSong | undefined> => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      console.log("userId: ",userId," songId:",songId)
+      const song = await userSongService.addUserSong({userId, songId});
+      return song;
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("Error al guardar cancion");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+  const deleteUserSong = async (id: number): Promise<string | undefined> => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const response = await userSongService.deleteUserSong(id);
+      return response;
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("Error al borrar cancion guardada");
+      }
     } finally {
       setLoading(false);
     }
@@ -65,5 +97,5 @@ export const useUserSong = () => {
     }
   };
 
-  return { userSongs, loading, error, getUserSongs, getMostPlayedUserSongs, incrementTimesPlayed };
+  return { userSongs, loading, error, getUserSongs, getMostPlayedUserSongs, addUserSong, deleteUserSong, incrementTimesPlayed };
 };

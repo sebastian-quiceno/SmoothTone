@@ -1,6 +1,5 @@
 package com.group.smoothtune.application.usecase.auth;
 
-import com.group.smoothtune.adapter.in.rest.dtos.response.AuthResponseDTO;
 import com.group.smoothtune.adapter.in.rest.dtos.request.SignInRequestDTO;
 import com.group.smoothtune.domain.port.AuthenticatePort;
 import com.group.smoothtune.domain.port.TokenPort;
@@ -15,15 +14,10 @@ public class SignInUseCase {
         this.tokenPort = tokenPort;
     }
 
-    public AuthResponseDTO execute(SignInRequestDTO dto) {
+    public String execute(SignInRequestDTO dto) {
 
-        // 1. Autenticación
         authenticatePort.authenticate(dto.email(), dto.password());
 
-        // 2. Generar token
-        String token = tokenPort.generateToken(dto.email());
-
-        // 3. Retornar DTO
-        return new AuthResponseDTO(token);
+        return tokenPort.generateToken(dto.email());
     }
 }

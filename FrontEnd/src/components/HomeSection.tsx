@@ -9,9 +9,11 @@ import UploadedSongs from "../components/UploadedSongs";
 
 type HomeSectionProps = {
   userId: number;
+  username: string;
+  uploadedSongs:number
 };
 
-export const HomeSection = ({ userId }: HomeSectionProps) => {
+export const HomeSection = ({ userId, username, uploadedSongs }: HomeSectionProps) => {
   const { userSongs, loading, error, getMostPlayedUserSongs } = useUserSong();
 
   useEffect(() => {
@@ -20,12 +22,9 @@ export const HomeSection = ({ userId }: HomeSectionProps) => {
 
   return (
     <section className="w-full h-full">
-      <header className="flex flex-row justify-end p-5 w-full">
-        <UserButton image="" username="User Name" />
-      </header>
       <div className="flex flex-row justify-between px-10">
-        <Greetings image="" username="User Name" />
-        <UploadedSongs uploadedSongs={25} />
+        <Greetings image="" username={username} />
+        <UploadedSongs uploadedSongs={uploadedSongs} />
       </div>
       <hr className="mx-5 my-2 border-[#191527] border-2" />
 

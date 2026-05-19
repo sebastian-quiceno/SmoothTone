@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { signUp } from "../services/authService";
+import { useAuth } from "../hooks/useAuth";
 import ButtonSubmit from "../components/ButtonSubmit";
 
 const SignUp = () => {
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const [email, setEmail] = useState("");
   const [username, setUser] = useState("");
@@ -31,14 +33,12 @@ const SignUp = () => {
 
     // llamada a tu backend (Spring Boot)
     try {
-
       const response = await signUp({ email, username, password });
 
-      console.log(response);
+      // Guardar usuario y token en AuthContext
+      login(response.user, response.token);
 
-      localStorage.setItem("token", response.token);
-
-      navigate("/home");
+      navigate("/userhome");
     } catch {
       setError("No se pudo crear la cuenta");
     }

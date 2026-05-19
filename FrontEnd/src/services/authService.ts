@@ -1,5 +1,6 @@
 import axios from "axios";
 import apiClient from "../apis/apiClient";
+import { type AuthResponseDTO } from "../types/auth";
 
 export interface SignInRequest {
   email: string;
@@ -20,33 +21,22 @@ function getApiErrorMessage(error: unknown, fallbackMessage: string) {
   return fallbackMessage;
 }
 
-export async function signIn(request: SignInRequest) {
+export async function signIn(request: SignInRequest): Promise<AuthResponseDTO> {
   try {
-    const response = await apiClient.post("/auth/signin", request);
-
-    const data = response.data;
-
-    localStorage.setItem("token", data.token);
-
-    return data;
+    const response = await apiClient.post<AuthResponseDTO>("/auth/signin", request);
+    return response.data;
 
   } catch (error: unknown) {
     throw new Error(getApiErrorMessage(error, "Credenciales inválidas"));
   }
 }
 
-export async function signUp(request: SignUpRequest) {
-
-  console.log(request);
-
+export async function signUp(request: SignUpRequest): Promise<AuthResponseDTO> {
   try {
-    const response = await apiClient.post("/auth/signup", request);
+    const response = await apiClient.post<AuthResponseDTO>("/auth/signup", request);
 
-    const data = response.data;
+    return response.data;
 
-    localStorage.setItem("token", data.token);
-
-    return data;
 
   } catch (error: unknown) {
     throw new Error(getApiErrorMessage(error, "Error al registrarse"));

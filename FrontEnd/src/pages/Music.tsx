@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Music,
@@ -9,12 +9,15 @@ import {
   CloudUpload,
 } from "lucide-react";
 
+import { useAuth } from "../hooks/useAuth";
+
+import UserButton from "../components/UserButton";
 import NewSong from "../components/UploadSongButton";
 import SectionButton from "../components/SectionButton";
 import { HomeSection } from "../components/HomeSection";
 import { SavedSongsSection } from "../components/SavedSongsSection";
 import { UploadedSongsSection } from "../components/UploadedSongsSection";
-import {AllSongsSection} from '../components/AllSongsSection'
+import { AllSongsSection } from "../components/AllSongsSection";
 import { Player } from "../components/Player";
 
 import logo from "/logo.png";
@@ -32,8 +35,7 @@ const UserHome = () => {
   };
 
   const [sectionSelected, setSectionSelected] = useState(components.home);
-  const [search, setSearch] = useState("");
-  const canciones: string[] = ["Time", "Here And Now", "Graduation"];
+  const { userId, userName, uploadedSongs } = useAuth();
 
   return (
     <div className="bg-[#2C2A4C] flex flex-row min-h-screen">
@@ -98,21 +100,31 @@ const UserHome = () => {
           />
         </div>
       </aside>
+
       <div className="flex-1 min-h-screen flex flex-col">
-        {sectionSelected === components.home &&(
-           <HomeSection userId={2} />
+        <header className="flex flex-row justify-end p-5 w-full">
+          <UserButton image="" username={userName} />
+        </header>
+        {sectionSelected === components.home && (
+          <HomeSection
+            userId={userId}
+            username={userName}
+            uploadedSongs={uploadedSongs}
+          />
         )}
         {sectionSelected === components.savedSongs && (
-          <SavedSongsSection id={2} />
+          <SavedSongsSection id={userId} />
         )}
         {sectionSelected === components.uploadedSongs && (
-          <UploadedSongsSection id={1} />
+          <UploadedSongsSection id={userId} />
         )}
-        {sectionSelected === components.allSongs && (
-          <AllSongsSection/>
+        {sectionSelected === components.allSongs && <AllSongsSection />}
+        {sectionSelected === components.playlist && (
+          <HomeSection userId={userId} />
         )}
-        {sectionSelected === components.playlist && <HomeSection userId={1} />}
-        {sectionSelected === components.artist && <HomeSection userId={1} />}
+        {sectionSelected === components.artist && (
+          <HomeSection userId={userId} />
+        )}
         <div className="mt-auto">
           <Player />
         </div>

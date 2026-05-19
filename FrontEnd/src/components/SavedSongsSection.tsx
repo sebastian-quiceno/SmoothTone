@@ -19,7 +19,6 @@ export const SavedSongsSection = ({ id }: SavedSongsSectionProps) => {
 
   return (
     <div className="text-white p-8">
-      
       <div className="flex flex-row justify-between pr-4">
         <span className="text-4xl ">Tus canciones Guardadas</span>
         <div className="w-12 h-12 bg-[#40a5bc] rounded-full flex items-center justify-center hover:scale-105 transition-all duration-200">
@@ -36,8 +35,12 @@ export const SavedSongsSection = ({ id }: SavedSongsSectionProps) => {
       </div>
       <hr className="mx-5 my-2 border-[#191527] border-2" />
       <ShowSongsExtended
+        saved={true}
         isLoading={loading}
-        userSongsIds={userSongs.map((item) => ({ userSongId: item.id, songId: item.song.id }))}
+        userSongsIds={userSongs.map((item) => ({
+          userSongId: item.id,
+          songId: item.song.id,
+        }))}
         songs={userSongs.map((item) => item.song)}
       />
     </div>

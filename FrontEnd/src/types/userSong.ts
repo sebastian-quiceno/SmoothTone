@@ -7,3 +7,8 @@ export type UserSong = {
     timesPlayed: number;
     savedAt: Date
 }
+
+export type UserSongRequest = {
+	userId: number
+	songId: number
+}

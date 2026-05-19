@@ -35,7 +35,7 @@ export const AllSongsSection = ({ pageNumber }: AllSongsSectionProps) => {
         <span className="">Info</span>
       </div>
       <hr className="mx-5 my-2 border-[#191527] border-2" />
-      <ShowSongsExtended isLoading={loading} songs={page?.content ?? []} />
+      <ShowSongsExtended saved={false} isLoading={loading} songs={page?.content ?? []} />
       <ChangePage
         pageNumber={actualPage}
         maxPage={maxPage ?? 1}

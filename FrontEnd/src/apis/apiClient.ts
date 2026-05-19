@@ -1,32 +1,56 @@
 import axios from "axios";
-import { getToken } from "../services/authService";
 
-//Configurar para despliegue
+// Configuración base
 const apiClient = axios.create({
   baseURL: "http://localhost:8080/api",
+
   headers: {
     "Content-Type": "application/json",
   },
 });
 
-apiClient.interceptors.request.use((config) => {
+// Interceptor REQUEST
+apiClient.interceptors.request.use(
+  (config) => {
 
-  const token = getToken();
+    // Obtener auth del localStorage
+    const storedAuth =
+      localStorage.getItem("auth");
 
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+    if (storedAuth) {
+
+      const auth = JSON.parse(storedAuth);
+
+      const token = auth.token;
+
+      if (token) {
+        config.headers.Authorization =
+          `Bearer ${token}`;
+      }
+    }
+
+    return config;
+  },
+
+  (error) => {
+    return Promise.reject(error);
   }
+);
 
-  return config;
-});
-
+// Interceptor RESPONSE
 apiClient.interceptors.response.use(
   (response) => response,
+
   (error) => {
 
+    // Token inválido o expirado
     if (error.response?.status === 401) {
-      localStorage.removeItem("token");
-      window.location.href = "/login";
+
+      // Limpiar sesión
+      localStorage.removeItem("auth");
+
+      // Redireccionar login
+      window.location.href = "/signin";
     }
 
     return Promise.reject(error);

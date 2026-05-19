@@ -51,6 +51,7 @@ public class UseCaseConfig {
 
     @Bean
     public SignUpUseCase signUpUseCase(
+            UserRepository userRepository,
             FindUserByEmailUseCase findUserByEmailUseCase,
             FindUserByUsernameUseCase findUserByUsernameUseCase,
             CreateUserUseCase createUserUseCase,
@@ -59,6 +60,7 @@ public class UseCaseConfig {
             AuthenticatePort authenticatePort
     ) {
         return new SignUpUseCase(
+                userRepository,
                 findUserByEmailUseCase,
                 findUserByUsernameUseCase,
                 createUserUseCase,

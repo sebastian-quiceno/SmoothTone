@@ -11,11 +11,13 @@ import com.group.smoothtune.domain.model.User;
 import com.group.smoothtune.domain.port.AuthenticatePort;
 import com.group.smoothtune.domain.port.PasswordEncoderPort;
 import com.group.smoothtune.domain.port.TokenPort;
+import com.group.smoothtune.domain.port.UserRepository;
 
 
 //REVISAR
 public class SignUpUseCase {
 
+    private final UserRepository userRepository;
     private final FindUserByEmailUseCase findUserByEmailUseCase;
     private final FindUserByUsernameUseCase findUserByUsernameUseCase;
     private final CreateUserUseCase createUserUseCase;
@@ -23,8 +25,8 @@ public class SignUpUseCase {
     private final TokenPort tokenPort;
     private final AuthenticatePort authenticatePort;
 
-
-    public SignUpUseCase(FindUserByEmailUseCase findUserByEmailUseCase, FindUserByUsernameUseCase findUserByUsernameUseCase, CreateUserUseCase createUserUseCase, PasswordEncoderPort passwordEncoderPort, TokenPort tokenPort, AuthenticatePort authenticatePort) {
+    public SignUpUseCase(UserRepository userRepository, FindUserByEmailUseCase findUserByEmailUseCase, FindUserByUsernameUseCase findUserByUsernameUseCase, CreateUserUseCase createUserUseCase, PasswordEncoderPort passwordEncoderPort, TokenPort tokenPort, AuthenticatePort authenticatePort) {
+        this.userRepository = userRepository;
         this.findUserByEmailUseCase = findUserByEmailUseCase;
         this.findUserByUsernameUseCase = findUserByUsernameUseCase;
         this.createUserUseCase = createUserUseCase;
@@ -53,6 +55,8 @@ public class SignUpUseCase {
                 dto.getUsername()
         );
 
+        userRepository.save(newUser);
+
         authenticatePort.authenticate(
                 newUser.getEmail(),
                 dto.getPassword()
@@ -61,6 +65,6 @@ public class SignUpUseCase {
         // 2. Generar token
         String token = tokenPort.generateToken(dto.getEmail());
 
-        return new AuthResponseDTO(token);
+        return new AuthResponseDTO(token, newUser.getId(), newUser.getUsername(), newUser.getUploadedSongs().size());
     }
 }

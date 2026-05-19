@@ -8,9 +8,9 @@ import Home from './pages/Home.tsx'
 import UserHome from './pages/Music.tsx'
 import GenreForm from './pages/GenreForm.tsx'
 import SongForm from './pages/SongForm.tsx'
+import { ProtectedRoute } from './components/ProtectedRoute.tsx'
 
-import {Player} from './components/Player.tsx'
-import {SongCardExtended} from './components/SongCardExtended.tsx'
+import { AuthProvider } from './contexts/AuthContext.tsx'
 
 import './index.css'
 
@@ -29,20 +29,22 @@ const router = createBrowserRouter([
   },
   {
     path: "/userhome",
-    element: <UserHome />,
+    element: <ProtectedRoute><UserHome /></ProtectedRoute>,
   },
   {
     path: "/creategenre",
-    element: <GenreForm />,
+    element: <ProtectedRoute><GenreForm /></ProtectedRoute>,
   },
   {
     path: "/upload-song",
-    element: <SongForm />,
+    element: <ProtectedRoute><SongForm /></ProtectedRoute>,
   },
 ]);
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
   </StrictMode>,
 )

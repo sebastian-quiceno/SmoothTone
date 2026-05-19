@@ -7,11 +7,11 @@ import { SongCardExtended } from "../components/SongCardExtended";
 import SongCard from "../components/SongCard";
 
 import { songMapper } from "../util/songMapper";
-import { Filter } from "lucide-react";
 type ShowSongsProps = {
   isLoading: boolean;
   songs: Song[];
   userSongsIds?: UserSongId[];
+  saved: boolean
 };
 
 type UserSongId = {
@@ -23,6 +23,7 @@ export const ShowSongsExtended = ({
   isLoading,
   songs,
   userSongsIds,
+  saved
 }: ShowSongsProps) => {
   const { play, queue } = usePlayerStore();
 
@@ -51,6 +52,8 @@ export const ShowSongsExtended = ({
               play(songMapper.toTrack(song));
             }
           }}
+          saved = {saved}
+          userSongId={userSongsIds?.find((userSong) => userSong.songId === song.id)?.userSongId}
         />
       ))}
     </div>
