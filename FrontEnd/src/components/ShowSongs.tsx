@@ -14,6 +14,12 @@ type ShowSongsProps = {
   saved: boolean
 };
 
+type ShowSongsPropss = {
+  isLoading: boolean;
+  songs: Song[];
+  userSongsIds?: UserSongId[];
+};
+
 type UserSongId = {
   userSongId: number;
   songId: number;
@@ -64,7 +70,7 @@ export const ShowSongs = ({
   isLoading,
   songs,
   userSongsIds,
-}: ShowSongsProps) => {
+}: ShowSongsPropss) => {
   const { play, queue } = usePlayerStore();
 
   return (

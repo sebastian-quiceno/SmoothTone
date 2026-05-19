@@ -37,6 +37,7 @@ export const userSongService = {
 	incrementTimesPlayed: async (id: number): Promise<string> => {
 		try {
 			const response = await apiClient.post<string>(`/userSong/incrementTimesPlayed/${id}`);
+			console.log("Se incremento las reproducciones de la cancion con id: "+id)
 			return response.data;
 
 		} catch (error) {

@@ -7,6 +7,7 @@ import SingUpPage from './pages/SingUpPage.tsx'
 import Home from './pages/Home.tsx'
 import UserHome from './pages/Music.tsx'
 import GenreForm from './pages/GenreForm.tsx'
+import ArtistForm from './pages/ArtistForm.tsx'
 import SongForm from './pages/SongForm.tsx'
 import { ProtectedRoute } from './components/ProtectedRoute.tsx'
 
@@ -14,7 +15,13 @@ import { AuthProvider } from './contexts/AuthContext.tsx'
 
 import './index.css'
 
+
+
 const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Home />,
+  },
   {
     path: "/signin",
     element: <SingInPage />,
@@ -24,16 +31,16 @@ const router = createBrowserRouter([
     element: <SingUpPage />,
   },
   {
-    path: "/home",
-    element: <Home />,
-  },
-  {
     path: "/userhome",
     element: <ProtectedRoute><UserHome /></ProtectedRoute>,
   },
   {
     path: "/creategenre",
     element: <ProtectedRoute><GenreForm /></ProtectedRoute>,
+  },
+  {
+    path: "/createartist",
+    element: <ProtectedRoute><ArtistForm /></ProtectedRoute>,
   },
   {
     path: "/upload-song",

@@ -23,7 +23,7 @@ export const artistService = {
 
   createArtist: async (request: CreateArtistRequest) => {
     try {
-      const response = await apiClient.post<Artist>("/genre/create", request);
+      const response = await apiClient.post<Artist>("/artist/create", request);
       return response.data;
 
     } catch (error: unknown) {

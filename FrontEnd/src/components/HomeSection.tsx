@@ -10,10 +10,14 @@ import UploadedSongs from "../components/UploadedSongs";
 type HomeSectionProps = {
   userId: number;
   username: string;
-  uploadedSongs:number
+  uploadedSongs: number;
 };
 
-export const HomeSection = ({ userId, username, uploadedSongs }: HomeSectionProps) => {
+export const HomeSection = ({
+  userId,
+  username,
+  uploadedSongs,
+}: HomeSectionProps) => {
   const { userSongs, loading, error, getMostPlayedUserSongs } = useUserSong();
 
   useEffect(() => {

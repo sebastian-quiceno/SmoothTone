@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { ImageUpload } from "../components/ImageUpload";
 import { SongUpload } from "../components/SongUpload";
 import { SearchBar } from "../components/SearchBar";
@@ -11,13 +12,16 @@ import { type Artist } from "../types/artist";
 import { useGenreFilter } from "../hooks/useGenreFilter";
 import { useArtistFilter } from "../hooks/useArtistFilter";
 import { useSongs } from "../hooks/useSongs";
+import { useAuth } from "../hooks/useAuth";
 
 import songUpload from "/SongUpload.jpg";
 import portraitNotFound from "/portraitNotFound.jpg";
 
 const SongForm = () => {
   //CAMBIAR
-  const userId = 1;
+
+  const navigate = useNavigate();
+  const { userId } = useAuth();
 
   const [formError, setFormError] = useState<string | null>(null);
 
@@ -33,7 +37,8 @@ const SongForm = () => {
   const [image, setImage] = useState<File | null>(null);
 
   const { genresFilters, loading: loadingGenres } = useGenreFilter(queryGenre);
-  const { artistsFilters, loading: loadingArtists } = useArtistFilter(queryArtist);
+  const { artistsFilters, loading: loadingArtists } =
+    useArtistFilter(queryArtist);
   const { loading: loadingApi, error: apiError, uploadSong } = useSongs();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -68,8 +73,19 @@ const SongForm = () => {
       setFormError("Es obligatorio la caratula");
       return;
     }
+    if (userId === null) {
+      setFormError("No se pudo identificar el usuario autenticado");
+      return;
+    }
 
-    await uploadSong({ song, image, title, artistId: artist.id, userId, genreId: genre.id });
+    await uploadSong({
+      song,
+      image,
+      title,
+      artistId: artist.id,
+      userId,
+      genreId: genre.id,
+    });
 
     // (opcional) limpiar si no hay error del backend
     if (!apiError) {
@@ -78,6 +94,8 @@ const SongForm = () => {
       setTitle("");
       setArtist(null);
       setGenre(null);
+
+      navigate("/userhome");
     }
   };
 
@@ -111,7 +129,7 @@ const SongForm = () => {
           </label>
           <input
             type="text"
-            className={`w-[350px] px-4 py-2 rounded-lg  ${title? "bg-green-300/70 " : "bg-white/10"} text-white focus:outline-none focus:ring-2 focus:ring-white/20 transition-all duration-300`}
+            className={`w-[350px] px-4 py-2 rounded-lg  ${title ? "bg-green-300/70 " : "bg-white/10"} text-white focus:outline-none focus:ring-2 focus:ring-white/20 transition-all duration-300`}
             placeholder="ingrese el nombre de la canción"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
@@ -159,6 +177,12 @@ const SongForm = () => {
         </div>
 
         <ButtonSubmit text="Crear Genero" color="purple" />
+        <span
+          className="text-[#58BDDE] cursor-pointer hover:underline flex justify-center mt-2"
+          onClick={() => navigate("/userhome")}
+        >
+          Volver al inicio
+        </span>
       </form>
       <div className="w-full max-w-80 bg-[#1A192A] rounded-2xl flex flex-col gap-5 shadow-lg p-8 relative z-10 justify-center items-center">
         <h2 className="text-3xl font-bold text-white text-center mb-2">

@@ -33,7 +33,9 @@ export const useUserSong = () => {
 
     try {
       const songs = await userSongService.getMostPlayedUserSongs(id);
+      setUserSongs(songs);
       return songs;
+      
     } catch (err: unknown) {
       if (err instanceof Error) {
         setError(err.message);

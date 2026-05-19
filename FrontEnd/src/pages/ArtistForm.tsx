@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useGenres } from "../hooks/useGenres";
+import { useArtist } from "../hooks/useArtist";
 import ButtonSubmit from "../components/ButtonSubmit";
 
 import genre from "/genre.jpg";
@@ -9,10 +9,10 @@ const GenreForm = () => {
   const navigate = useNavigate();
 
   const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
+  const [biography, setBiography] = useState("");
   const [formError, setFormError] = useState<string | null>(null);
 
-  const { createGenre, loading, error: apiError } = useGenres();
+  const { createArtist, loading, error: apiError } = useArtist();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,17 +30,17 @@ const GenreForm = () => {
       setFormError("El nombre debe tener al menos 3 caracteres");
       return;
     }
-    if (!description.trim()) {
-      setFormError("La descripción es obligatoria");
+    if (!biography.trim()) {
+      setFormError("La Biografia es obligatoria");
       return;
     }
 
-    await createGenre({ name, description });
+    await createArtist({ name, biography });
 
     // (opcional) limpiar si no hay error del backend
     if (!apiError) {
       setName("");
-      setDescription("");
+      setBiography("");
 
       navigate("/userhome");
     }
@@ -61,7 +61,7 @@ const GenreForm = () => {
       <div className="absolute inset-0 bg-black/70"></div>
       <div className="w-full max-w-md bg-[#192a29] rounded-2xl shadow-lg p-8 relative z-10 justify-center">
         <h2 className="text-3xl font-bold text-white text-center mb-6">
-          ¡Crea tu genero de musica!
+          ¡Agrega a tu Artista!
         </h2>
 
         {formError && (
@@ -71,30 +71,30 @@ const GenreForm = () => {
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
             <label className="block text-gray-300 mb-1">
-              Nombre del genero
+              Nombre del Artista
             </label>
             <input
               type="text"
               className="w-full px-4 py-2 rounded-lg bg-[#364747] text-white focus:outline-none focus:ring-2 focus:ring-green-500"
-              placeholder="ingrese el nombre del genero musical"
+              placeholder="ingrese el nombre del Artista..."
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
           </div>
 
           <div>
-            <label className="block text-gray-300 mb-1">Descripción</label>
+            <label className="block text-gray-300 mb-1">Biografia</label>
             <textarea
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder="Ingresa de que trata el genero..."
+              value={biography}
+              onChange={(e) => setBiography(e.target.value)}
+              placeholder="Ingresa acerca del artista..."
               rows={4}
               className="w-full px-4 py-2 rounded-lg bg-[#364747] text-white focus:outline-none focus:ring-2 focus:ring-green-500"
             />
           </div>
 
 
-          <ButtonSubmit text="Crear Genero" color="orange"/>
+          <ButtonSubmit text="Crear Artista" color="orange"/>
         </form>
 
         <span

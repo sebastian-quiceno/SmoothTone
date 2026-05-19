@@ -35,8 +35,8 @@ const SignUp = () => {
     try {
       const response = await signUp({ email, username, password });
 
-      // Guardar usuario y token en AuthContext
-      login(response.user, response.token);
+      // Guardar en AuthContext + localStorage
+      login(response);
 
       navigate("/userhome");
     } catch {
