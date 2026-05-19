@@ -1,7 +1,6 @@
 package com.group.smoothtune;
 
 import com.group.smoothtune.application.usecase.auth.SignInUseCase;
-import com.group.smoothtune.adapter.in.rest.dtos.response.AuthResponseDTO;
 import com.group.smoothtune.adapter.in.rest.dtos.request.SignInRequestDTO;
 import com.group.smoothtune.domain.port.AuthenticatePort;
 import com.group.smoothtune.domain.port.TokenPort;
@@ -40,11 +39,11 @@ class SignInUseCaseTest {
                 .thenReturn(fakeToken);
 
         // Act
-        AuthResponseDTO response = signInUseCase.execute(request);
+        String response = signInUseCase.execute(request);
 
         // Assert
         assertNotNull(response);
-        assertEquals(fakeToken, response.token());
+        assertEquals(fakeToken, response);
 
         verify(authenticatePort).authenticate(email, password);
         verify(tokenPort).generateToken(email);
