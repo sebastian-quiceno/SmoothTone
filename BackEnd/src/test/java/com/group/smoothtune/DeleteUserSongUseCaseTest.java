@@ -1,7 +1,7 @@
 package com.group.smoothtune;
 
 import com.group.smoothtune.application.usecase.UserSong.DeleteUserSongUseCase;
-import com.group.smoothtune.domain.exception.UserNotFoundException;
+import com.group.smoothtune.domain.exception.UserSongNotFoundException;
 import com.group.smoothtune.domain.model.UserSong;
 import com.group.smoothtune.domain.port.UserSongRepository;
 
@@ -49,7 +49,7 @@ class DeleteUserSongUseCaseTest {
                 .thenReturn(Optional.empty());
 
         // Act & Assert
-        assertThrows(UserNotFoundException.class, () -> {
+        assertThrows(UserSongNotFoundException.class, () -> {
             useCase.execute(userSongId);
         });
 
