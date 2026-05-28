@@ -75,8 +75,8 @@ export const SongCardExtended = ({
       <span className="text-white/70 text-2xl">{genre}</span>
       <span className="text-white/70 text-xl">{formattedDate}</span>
       
-      {saved&& <OptionsSavedSong  userSongId={userSongId}/>}
-      {!saved&& <OptionsSong songId={id} userId={userId}/>}
+      {saved&& <OptionsSavedSong  userSongId={userSongId} songId={id}/>}
+      {!saved&& <OptionsSong songId={id}/>}
       
     </div>
   );

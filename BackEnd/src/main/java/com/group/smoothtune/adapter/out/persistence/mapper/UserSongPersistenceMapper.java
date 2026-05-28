@@ -2,9 +2,13 @@ package com.group.smoothtune.adapter.out.persistence.mapper;
 
 import com.group.smoothtune.adapter.out.persistence.entity.SongEntity;
 import com.group.smoothtune.adapter.out.persistence.entity.UserEntity;
+import com.group.smoothtune.domain.model.Song;
+import com.group.smoothtune.domain.model.User;
 import com.group.smoothtune.domain.model.UserSong;
 import com.group.smoothtune.adapter.out.persistence.entity.PlaylistUserSongEntity;
 import com.group.smoothtune.adapter.out.persistence.entity.UserSongEntity;
+
+import java.util.List;
 
 public class UserSongPersistenceMapper {
 

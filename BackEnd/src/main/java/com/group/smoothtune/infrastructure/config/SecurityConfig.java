@@ -30,9 +30,12 @@ public class SecurityConfig {
         http
                 .cors(cors -> {})
                 .csrf(csrf -> csrf.disable())
+                .headers(headers ->
+                        headers.frameOptions(frame -> frame.sameOrigin())
+                )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/h2-console", "/api/auth/**", "/file/**").permitAll()
+                        .requestMatchers("/h2-console/**", "/api/auth/**", "/file/**").permitAll()
                         .anyRequest().authenticated()
                 );
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

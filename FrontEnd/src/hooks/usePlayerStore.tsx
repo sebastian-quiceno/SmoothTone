@@ -19,6 +19,9 @@ interface PlayerStore {
   seek: (time: number) => void
   setVolume: (volume: number) => void
   setQueue: (tracks: Track[]) => void
+  enqueue: (track: Track) => void
+  enqueueNext: (track: Track) => void
+  removeFromQueue: (trackId: number) => void
   next: () => Promise<void>
   previous: () => Promise<void>
 }
@@ -35,7 +38,7 @@ export const usePlayerStore = create<PlayerStore>((set, get) => ({
   // ======================================================
   // PLAY (NOW FETCHES URL FROM BACKEND)
   // ======================================================
-  play: async (track, queue, userSongId) => {
+  play: async (track, queue) => {
     try {
       //pedir URL al backend
       const url = await songService.getAudioUrl(track.id)
@@ -44,10 +47,6 @@ export const usePlayerStore = create<PlayerStore>((set, get) => ({
       audio.src = url
 
       await audio.play()
-
-      if (userSongId) {
-        userSongService.incrementTimesPlayed(userSongId)
-      }
 
       const index =
         queue?.findIndex((t) => t.id === track.id) ?? 0
@@ -94,6 +93,49 @@ export const usePlayerStore = create<PlayerStore>((set, get) => ({
   // ======================================================
   setQueue: (tracks) => {
     set({ queue: tracks })
+  },
+
+  // ======================================================
+  // ENQUEUE: add track to end of queue
+  // ======================================================
+  enqueue: (track) => {
+    set((state) => ({ queue: [...state.queue, track] }))
+  },
+
+  // ======================================================
+  // ENQUEUE NEXT: insert track right after currentIndex
+  // ======================================================
+  enqueueNext: (track) => {
+    const { queue, currentIndex } = get()
+    const insertIndex = Math.min(currentIndex + 1, queue.length)
+    const newQueue = [...queue.slice(0, insertIndex), track, ...queue.slice(insertIndex)]
+    set({ queue: newQueue })
+  },
+
+  // ======================================================
+  // REMOVE FROM QUEUE
+  // Adjust currentIndex if necessary
+  // ======================================================
+  removeFromQueue: (trackId) => {
+    const { queue, currentIndex, currentTrack } = get()
+    const newQueue = queue.filter((t) => t.id !== trackId)
+
+    let newIndex = currentIndex
+
+    // If removed item is before currentIndex, shift index left
+    const removedIndex = queue.findIndex((t) => t.id === trackId)
+    if (removedIndex !== -1 && removedIndex < currentIndex) {
+      newIndex = Math.max(0, currentIndex - 1)
+    }
+
+    // If current track was removed, stop playback
+    if (currentTrack?.id === trackId) {
+      audio.pause()
+      set({ isPlaying: false, currentTrack: null, currentIndex: 0, queue: newQueue })
+      return
+    }
+
+    set({ queue: newQueue, currentIndex: newIndex })
   },
 
   // ======================================================

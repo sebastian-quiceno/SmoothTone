@@ -176,7 +176,7 @@ const SongForm = () => {
           <ImageUpload onImageSelect={setImage} />
         </div>
 
-        <ButtonSubmit text="Crear Genero" color="purple" />
+        <ButtonSubmit text="Crear Cancion" color="purple" />
         <span
           className="text-[#58BDDE] cursor-pointer hover:underline flex justify-center mt-2"
           onClick={() => navigate("/userhome")}

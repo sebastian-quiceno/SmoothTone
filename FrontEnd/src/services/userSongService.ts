@@ -56,6 +56,8 @@ export const userSongService = {
 	deleteUserSong: async (id: number): Promise<string> => {
 		try {
 			const response = await apiClient.post<string>(`/userSong/deleteUserSong/${id}`);
+			console.log("Si se imprime esto es que si lo borro, se supone...")
+			console.log(response);
 			return response.data;
 
 		} catch (error) {

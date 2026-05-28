@@ -30,6 +30,7 @@ public class UserSongController {
 
     @PostMapping("/addUserSong")
     public ResponseEntity<UserSongResponseDTO> addUserSong(@RequestBody UserSongRequestDTO dto){
+        System.out.println("Se recibieron los siguientes valores para guardar la cancion. SongId: "+dto.getSongId()+"UserId: "+dto.getUserId());
         return ResponseEntity.status(HttpStatus.CREATED).body(UserSongMapper.toResponse(addUserSongUseCase.execute(dto.getUserId(), dto.getSongId())));
     }
 

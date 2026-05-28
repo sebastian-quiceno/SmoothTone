@@ -19,6 +19,7 @@ public class DataInitializer {
                         .email("prueba@test.com")
                         .username("Prueba")
                         .password(encoder.encode("prueba123"))
+                        .enabled(true)
                         .build();
 
                 userRepo.save(user);

@@ -1,6 +1,8 @@
 package com.group.smoothtune.application.usecase.UserSong;
 
 import com.group.smoothtune.domain.exception.UserNotFoundException;
+import com.group.smoothtune.domain.exception.UserSongNotFoundException;
+import com.group.smoothtune.domain.model.UserSong;
 import com.group.smoothtune.domain.port.UserSongRepository;
 
 public class DeleteUserSongUseCase {
@@ -13,7 +15,7 @@ public class DeleteUserSongUseCase {
 
     public void execute(Long userSongId) {
 
-        userSongRepository.findById(userSongId).orElseThrow(()-> new UserNotFoundException("No se encontro el usuario con el ID: "+userSongId));
+        userSongRepository.findById(userSongId).orElseThrow(()-> new UserSongNotFoundException("No se encontro la cancion guardada con el ID: "+userSongId));
 
         userSongRepository.deleteById(userSongId);
     }

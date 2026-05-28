@@ -102,10 +102,8 @@ const UserHome = () => {
       </aside>
 
       <div className="flex-1 min-h-screen flex flex-col">
-        
-        <header className="flex flex-row justify-end p-5 w-full">
-          <UserButton image="" username={userName} />
-        </header>
+        <UserButton image="" username={userName} />
+
         {sectionSelected === components.home && (
           <HomeSection
             userId={userId}

@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 import { useImageUpload } from "../hooks/useImageUpload";
 
@@ -9,6 +10,12 @@ type Props = {
 
 export const ImageUpload = ({ onImageSelect }: Props) => {
   const { image, preview, onDrop } = useImageUpload();
+
+  useEffect(() => {
+    if (image && onImageSelect) {
+      onImageSelect(image);
+    }
+  }, [image, onImageSelect]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
@@ -22,7 +29,7 @@ export const ImageUpload = ({ onImageSelect }: Props) => {
     <div
       {...getRootProps()}
 
-      className={`w-[350px] h-[250px] p-4 border-2 border-dashed bg-white/5 text-white  ${preview? "border-green-300/70 " : "border-white"} rounded-xl flex flex-col items-center justify-center gap-2 cursor-pointer`}
+      className={`w-[350px] h-[250px] p-4 border-2 border-dashed bg-white/5 text-white  ${preview ? "border-green-300/70 " : "border-white"} rounded-xl flex flex-col items-center justify-center gap-2 cursor-pointer`}
     >
       <input {...getInputProps()} />
 
@@ -33,7 +40,6 @@ export const ImageUpload = ({ onImageSelect }: Props) => {
             alt="imagen subida"
             className="w-[200px] rounded-xl"
           />
-          {onImageSelect?.(image)}
         </>
       ) : isDragActive ? (
         <p>Drop the files here ...</p>

@@ -21,8 +21,8 @@ public class UserSongRepositoryImpl implements UserSongRepository {
     @Override
     public UserSong save(UserSong userSong) {
         UserSongEntity entity = UserSongPersistenceMapper.toEntity(userSong);
-        UserSongEntity saved = userSongJpaRepository.save(entity);
-        return UserSongPersistenceMapper.toDomain(saved);
+        userSongJpaRepository.save(entity);
+        return userSong;
     }
 
     @Override

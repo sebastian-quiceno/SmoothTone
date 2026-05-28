@@ -3,7 +3,7 @@ import { CirclePlay } from "lucide-react";
 
 import { useSongs } from "../hooks/useSongs";
 
-import {ChangePage} from '../components/ChangePage'
+import { ChangePage } from "../components/ChangePage";
 import { ShowSongsExtended } from "../components/ShowSongs";
 
 type AllSongsSectionProps = {
@@ -35,7 +35,11 @@ export const AllSongsSection = ({ pageNumber }: AllSongsSectionProps) => {
         <span className="">Info</span>
       </div>
       <hr className="mx-5 my-2 border-[#191527] border-2" />
-      <ShowSongsExtended saved={false} isLoading={loading} songs={page?.content ?? []} />
+      <ShowSongsExtended
+        saved={false}
+        isLoading={loading}
+        songs={page?.content ?? []}
+      />
       <ChangePage
         pageNumber={actualPage}
         maxPage={maxPage ?? 1}

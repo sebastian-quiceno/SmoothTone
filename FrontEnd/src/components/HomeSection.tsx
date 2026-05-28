@@ -34,16 +34,14 @@ export const HomeSection = ({
 
       <div className="text-white font-bold px-10 gap-10">
         <span className="text-4xl">¿Que vas a escuchar hoy?</span>
-        <div className="grid grid-cols-5 gap-4 mt-5">
-          <ShowSongs
-            isLoading={loading}
-            userSongsIds={userSongs.map((item) => ({
-              userSongId: item.id,
-              songId: item.song.id,
-            }))}
-            songs={userSongs.map((item) => item.song)}
-          />
-        </div>
+        <ShowSongs
+          isLoading={loading}
+          userSongsIds={userSongs.map((item) => ({
+            userSongId: item.id,
+            songId: item.song.id,
+          }))}
+          songs={userSongs.map((item) => item.song)}
+        />
       </div>
     </section>
   );

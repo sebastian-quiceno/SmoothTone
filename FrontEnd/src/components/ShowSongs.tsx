@@ -2,6 +2,7 @@ import { useState } from "react";
 import { type Song } from "../types/song";
 
 import { usePlayerStore } from "../hooks/usePlayerStore";
+import { useUserSong } from "../hooks/useUserSong";
 
 import { SongCardExtended } from "../components/SongCardExtended";
 import SongCard from "../components/SongCard";
@@ -11,7 +12,7 @@ type ShowSongsProps = {
   isLoading: boolean;
   songs: Song[];
   userSongsIds?: UserSongId[];
-  saved: boolean
+  saved: boolean;
 };
 
 type ShowSongsPropss = {
@@ -29,9 +30,10 @@ export const ShowSongsExtended = ({
   isLoading,
   songs,
   userSongsIds,
-  saved
+  saved,
 }: ShowSongsProps) => {
   const { play, queue } = usePlayerStore();
+  const { incrementTimesPlayed } = useUserSong();
 
   return (
     <div className="flex flex-col gap-5 mt-5">
@@ -53,18 +55,24 @@ export const ShowSongsExtended = ({
               const userSong = userSongsIds.find(
                 (userSong) => userSong.songId === song.id,
               );
-              play(songMapper.toTrack(song), undefined, userSong.id);
+              incrementTimesPlayed(userSong.userSongId);
+
+              play(songMapper.toTrack(song));
             } else {
               play(songMapper.toTrack(song));
             }
           }}
-          saved = {saved}
-          userSongId={userSongsIds?.find((userSong) => userSong.songId === song.id)?.userSongId}
+          saved={saved}
+          userSongId={
+            userSongsIds?.find((userSong) => userSong.songId === song.id)
+              ?.userSongId
+          }
         />
       ))}
     </div>
   );
 };
+
 
 export const ShowSongs = ({
   isLoading,
@@ -72,9 +80,10 @@ export const ShowSongs = ({
   userSongsIds,
 }: ShowSongsPropss) => {
   const { play, queue } = usePlayerStore();
+  const { incrementTimesPlayed } = useUserSong();
 
   return (
-    <div className="flex flex-col gap-5 mt-5">
+    <div className="grid grid-cols-5 gap-4 mt-5">
       {isLoading && <p className="text-sm text-gray-400 mt-1">Cargando...</p>}
 
       {songs.map((song) => (
@@ -87,7 +96,8 @@ export const ShowSongs = ({
             const userSong = userSongsIds.find(
               (userSong) => userSong.songId === song.id,
             );
-            play(songMapper.toTrack(song), undefined, userSong.id);
+            incrementTimesPlayed(userSong.userSongId);
+            play(songMapper.toTrack(song));
           }}
         />
       ))}
